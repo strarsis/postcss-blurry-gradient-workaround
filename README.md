@@ -9,40 +9,40 @@
 ```css
 .foo {
     /* Input example */
-	/* apply-gradient-stops-workaround */
-	background:
-		linear-gradient(to right,
-		  green        10%,
-		  yellowgreen  10%, yellowgreen  20%,
-		  yellow       20%, yellow       30%,
-		  orange       30%, orange       40%,
-		  red          40%, red          50%,
-		  grey         50%, grey         60%,
-		  blue         60%, rgba(255,0,0,0) 70%,
-		  green        70%, green        70%,
-		  yellowgreen  70%, yellowgreen  80%,
-		  yellow       80%, yellow       90%,
-		  salmon       90%);
+    background:
+        /* apply-gradient-stops-workaround */
+        linear-gradient(to right,
+          green        10%,
+          yellowgreen  10%, yellowgreen  20%,
+          yellow       20%, yellow       30%,
+          orange       30%, orange       40%,
+          red          40%, red          50%,
+          grey         50%, grey         60%,
+          blue         60%, rgba(255,0,0,0) 70%,
+          green        70%, green        70%,
+          yellowgreen  70%, yellowgreen  80%,
+          yellow       80%, yellow       90%,
+          salmon       90%);
 }
 ```
 
 ```css
 .foo {
   /* Output example */
-  /* apply-gradient-stops-workaround */
-	background:
-		linear-gradient(to right,
-		  green        10%,
-		  yellowgreen  10%, yellowgreen  20%,
-		  yellow       20%, yellow       30%,
-		  orange       30%, orange       40%,
-		  red          40%, red          50%,
-		  grey         50%, grey         60%,
-		  blue         60%, rgba(255,0,0,0) 70%) , linear-gradient(to right , transparent 70%,
-		  green        70%, green        70%,
-		  yellowgreen  70%, yellowgreen  80%,
-		  yellow       80%, yellow       90%,
-		  salmon       90%);
+    background:
+        /* apply-gradient-stops-workaround */
+        linear-gradient(to right,
+          green        10%,
+          yellowgreen  10%, yellowgreen  20%,
+          yellow       20%, yellow       30%,
+          orange       30%, orange       40%,
+          red          40%, red          50%,
+          grey         50%, grey         60%,
+          blue         60%, rgba(255,0,0,0) 70%) , linear-gradient(to right , transparent 70%,
+          green        70%, green        70%,
+          yellowgreen  70%, yellowgreen  80%,
+          yellow       80%, yellow       90%,
+          salmon       90%);
 }
 ```
 
