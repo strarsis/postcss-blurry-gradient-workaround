@@ -12,38 +12,38 @@ it('splits gradient stops into two gradients', async () => {
   await run(
 
 `.foo {
-	/* apply-gradient-stops-workaround */
-	background:
-		linear-gradient(to right,
-		  green        10%,
-		  yellowgreen  10%, yellowgreen  20%,
-		  yellow       20%, yellow       30%,
-		  orange       30%, orange       40%,
-		  red          40%, red          50%,
-		  grey         50%, grey         60%,
-		  blue         60%, rgba(255,0,0,0) 70%,
-		  green        70%, green        70%,
-		  yellowgreen  70%, yellowgreen  80%,
-		  yellow       80%, yellow       90%,
-		  salmon       90%);
+    /* apply-gradient-stops-workaround */
+    background:
+        linear-gradient(to right,
+          green        10%,
+          yellowgreen  10%, yellowgreen  20%,
+          yellow       20%, yellow       30%,
+          orange       30%, orange       40%,
+          red          40%, red          50%,
+          grey         50%, grey         60%,
+          blue         60%, rgba(255,0,0,0) 70%,
+          green        70%, green        70%,
+          yellowgreen  70%, yellowgreen  80%,
+          yellow       80%, yellow       90%,
+          salmon       90%);
 }`
 ,
 
 `.foo {
-	/* apply-gradient-stops-workaround */
-	background:
-		linear-gradient(to right,
-		  green        10%,
-		  yellowgreen  10%, yellowgreen  20%,
-		  yellow       20%, yellow       30%,
-		  orange       30%, orange       40%,
-		  red          40%, red          50%,
-		  grey         50%, grey         60%,
-		  blue         60%, rgba(255,0,0,0) 70%) , linear-gradient(to right , transparent 70%,
-		  green        70%, green        70%,
-		  yellowgreen  70%, yellowgreen  80%,
-		  yellow       80%, yellow       90%,
-		  salmon       90%);
+    /* apply-gradient-stops-workaround */
+    background:
+        linear-gradient(to right,
+          green        10%,
+          yellowgreen  10%, yellowgreen  20%,
+          yellow       20%, yellow       30%,
+          orange       30%, orange       40%,
+          red          40%, red          50%,
+          grey         50%, grey         60%,
+          blue         60%, rgba(255,0,0,0) 70%) , linear-gradient(to right , transparent 70%,
+          green        70%, green        70%,
+          yellowgreen  70%, yellowgreen  80%,
+          yellow       80%, yellow       90%,
+          salmon       90%);
 }`
 ,
 
@@ -159,6 +159,52 @@ it('splits a large number of a more complex gradient stops into multiple gradien
 );
 
 }`,
+
+{}
+
+)
+})
+
+
+it('works with gradients that have no direction/angle component', async () => {
+  await run(
+
+`.foo {
+    /* apply-gradient-stops-workaround */
+    background:
+        linear-gradient(
+          green        10%,
+          yellowgreen  10%, yellowgreen  20%,
+          yellow       20%, yellow       30%,
+          orange       30%, orange       40%,
+          red          40%, red          50%,
+          grey         50%, grey         60%,
+          blue         60%, rgba(255,0,0,0) 70%,
+          green        70%, green        70%,
+          yellowgreen  70%, yellowgreen  80%,
+          yellow       80%, yellow       90%,
+          salmon       90%);
+}`
+,
+
+`.foo {
+    /* apply-gradient-stops-workaround */
+    background:
+        linear-gradient(
+          green        10%,
+          yellowgreen  10%, yellowgreen  20%,
+          yellow       20%, yellow       30%,
+          orange       30%, orange       40%,
+          red          40%, red          50%,
+          grey         50%, grey         60%,
+          blue         60%, rgba(255,0,0,0) 70%,
+          green        70%        ,        transparent        70%) , linear-gradient(
+          green        10%        ,        transparent        70%, green        70%,
+          yellowgreen  70%, yellowgreen  80%,
+          yellow       80%, yellow       90%,
+          salmon       90%);
+}`
+,
 
 {}
 

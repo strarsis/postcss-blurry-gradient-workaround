@@ -5,7 +5,7 @@ const valuesParse = require('postcss-values-parser'),
       parseColor  = require('color-parse'),
       splitArray  = require('split-array');
 
-module.exports = (opts = { }) => {
+module.exports = (opts = {}) => {
 
 	const DEFAULTS = {
 		stopsLimit: 7 * 2,
@@ -225,8 +225,7 @@ function getGradientDetails(funcNode) {
 	});
 
 	// for the last stop
-	if(curStop)
-		gradient.colorStops.push(curStop);
+	gradient.colorStops.push(curStop);
 
 	return gradient;
 }
