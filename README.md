@@ -4,7 +4,7 @@
 
 [PostCSS]: https://github.com/postcss/postcss
 
-[Demo for the issue, including a workaround.](https://codepen.io/strarsis/pen/MWbxWMw)
+[Demo for issue amd workaround.](https://codepen.io/strarsis/pen/MWbxWMw)
 
 ```css
 .foo {
