@@ -12,108 +12,120 @@ module.exports = (opts = { }) => {
 	};
 	let config = Object.assign(opts, DEFAULTS);
 
-	let stopsLimit = config.stopsLimit;
-
 
 	return {
 		postcssPlugin: 'postcss-blurry-gradient-workaround',
 
-		Declaration (decl) {
-			if(decl.bgwProcessed) return;
+		Comment (comment) {
+			if(comment.text !== 'apply-gradient-stops-workaround') return;
 
-			let values = parseValues(decl.value);
-			let gradientsAst = getGradientFuncs(values);
+			let followingNode = comment.next();
+			if(followingNode.type !== 'decl') return;
 
-			for(let gradientAst of gradientsAst) {
-				let gradientDetails = getGradientDetails(gradientAst);
-				if(gradientDetails.colorStops.length <= stopsLimit) continue;
-					// stops within limit, no further action needed
+			return processDecl( followingNode, config );
+		},
 
-				const stopsSubsets = splitArray(gradientDetails.colorStops, (stopsLimit - 1));
-					// split stops into subsets within limit
-
-				// placeholder as first/last color stop (except for last gradient)
-				for(let stopsSubsetIndex in stopsSubsets) {
-					let curSubset  = stopsSubsets[ stopsSubsetIndex     ];
-					let prevSubset = stopsSubsets[ stopsSubsetIndex - 1 ]; // (last)
-					if(!prevSubset) continue; // not for the first subset
-
-
-					// placeholder at end   of previous gradient
-					let lastPrevStop      = prevSubset[ prevSubset.length - 1 ], // (last)
-						lastPrevStopColor = lastPrevStop.value;
-					if(!isColorTransparent( lastPrevStopColor )) {
-							// stops with already transparent colors don't need a placeholder
-						let endPlaceholderStop   = createPlaceholderStop(lastPrevStop);
-						stopsSubsets[ stopsSubsetIndex - 1 ].push(endPlaceholderStop);   // (prevSubset)
-					}
-
-
-					// placeholder at start of current  gradient
-					let lastCurStop      = curSubset[ curSubset.length - 1 ], // (last)
-						lastCurStopColor = lastCurStop.value;
-					if(!isColorTransparent( lastCurStopColor )) {
-						// stops with already transparent colors don't need a placeholder
-
-						let startPlaceholderStop = createPlaceholderStop(lastPrevStop);
-						stopsSubsets[ stopsSubsetIndex ].unshift(startPlaceholderStop); // (curSubset)
-					}
-
-				}
-
-
-
-
-				// AST
-				for(let stopsSubsetIndex in stopsSubsets) {
-					const isLastSubset = stopsSubsetIndex >= (stopsSubsets.length - 1)
-
-					// separate gradient
-					let extraGradientAst = gradientAst.cloneBefore();
-
-					// separator between gradients
-					if(!isLastSubset) {
-						const commaPunctuation = new Punctuation({ value: ',' });
-						gradientDetails.fnNode.parent.insertAfter(extraGradientAst, commaPunctuation);
-					}
-
-
-					// repopulate gradient with subset
-					extraGradientAst.removeAll();
-
-					// direction
-					if(gradientDetails.direction) {
-						for(let gradientDirection of gradientDetails.direction) {
-							extraGradientAst.append(gradientDirection.clone());
-						}
-					}
-
-					// color stops
-					let stopsSubset = stopsSubsets[stopsSubsetIndex];
-					for(let stop of stopsSubset) {
-						if(stop.nodes) {
-							for(let stopNode of stop.nodes) {
-								extraGradientAst.append(stopNode.clone());
-							}
-						}
-					}
-
-				}
-
-
-				// clean up original gradient (after cloning it)
-				gradientAst.remove();
-
-				// Update value
-				decl.value        = values; // .toString()
-				decl.bgwProcessed = true;
-			}
-		}
 	}
 }
 module.exports.postcss = true
 
 
+
+
+
+function processDecl( decl, config ) {
+	let stopsLimit = config.stopsLimit;
+
+	if(decl.bgwProcessed) return;
+
+	let values = parseValues(decl.value);
+	let gradientsAst = getGradientFuncs(values);
+
+	for(let gradientAst of gradientsAst) {
+		let gradientDetails = getGradientDetails(gradientAst);
+		if(gradientDetails.colorStops.length <= stopsLimit) continue;
+			// stops within limit, no further action needed
+
+		const stopsSubsets = splitArray(gradientDetails.colorStops, (stopsLimit - 1));
+			// split stops into subsets within limit
+
+		// placeholder as first/last color stop (except for last gradient)
+		for(let stopsSubsetIndex in stopsSubsets) {
+			let curSubset  = stopsSubsets[ stopsSubsetIndex     ];
+			let prevSubset = stopsSubsets[ stopsSubsetIndex - 1 ]; // (last)
+			if(!prevSubset) continue; // not for the first subset
+
+
+			// placeholder at end   of previous gradient
+			let lastPrevStop      = prevSubset[ prevSubset.length - 1 ], // (last)
+				lastPrevStopColor = lastPrevStop.value;
+			if(!isColorTransparent( lastPrevStopColor )) {
+					// stops with already transparent colors don't need a placeholder
+				let endPlaceholderStop   = createPlaceholderStop(lastPrevStop);
+				stopsSubsets[ stopsSubsetIndex - 1 ].push(endPlaceholderStop);   // (prevSubset)
+			}
+
+
+			// placeholder at start of current  gradient
+			let lastCurStop      = curSubset[ curSubset.length - 1 ], // (last)
+				lastCurStopColor = lastCurStop.value;
+			if(!isColorTransparent( lastCurStopColor )) {
+				// stops with already transparent colors don't need a placeholder
+
+				let startPlaceholderStop = createPlaceholderStop(lastPrevStop);
+				stopsSubsets[ stopsSubsetIndex ].unshift(startPlaceholderStop); // (curSubset)
+			}
+
+		}
+
+
+
+
+		// AST
+		for(let stopsSubsetIndex in stopsSubsets) {
+			const isLastSubset = stopsSubsetIndex >= (stopsSubsets.length - 1)
+
+			// separate gradient
+			let extraGradientAst = gradientAst.cloneBefore();
+
+			// separator between gradients
+			if(!isLastSubset) {
+				const commaPunctuation = new Punctuation({ value: ',' });
+				gradientDetails.fnNode.parent.insertAfter(extraGradientAst, commaPunctuation);
+			}
+
+
+			// repopulate gradient with subset
+			extraGradientAst.removeAll();
+
+			// direction
+			if(gradientDetails.direction) {
+				for(let gradientDirection of gradientDetails.direction) {
+					extraGradientAst.append(gradientDirection.clone());
+				}
+			}
+
+			// color stops
+			let stopsSubset = stopsSubsets[stopsSubsetIndex];
+			for(let stop of stopsSubset) {
+				if(stop.nodes) {
+					for(let stopNode of stop.nodes) {
+						extraGradientAst.append(stopNode.clone());
+					}
+				}
+			}
+
+		}
+
+
+		// clean up original gradient (after cloning it)
+		gradientAst.remove();
+
+		// Update value
+		decl.value        = values; // .toString()
+		decl.bgwProcessed = true;
+	}
+}
 
 function createPlaceholderStop(sourceStop) {
 	// create ASTs

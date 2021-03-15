@@ -12,7 +12,7 @@ it('splits gradient stops into two gradients', async () => {
   await run(
 
 `.foo {
-    /* Input example */
+	/* apply-gradient-stops-workaround */
 	background:
 		linear-gradient(to right,
 		  green        10%,
@@ -30,7 +30,7 @@ it('splits gradient stops into two gradients', async () => {
 ,
 
 `.foo {
-    /* Input example */
+	/* apply-gradient-stops-workaround */
 	background:
 		linear-gradient(to right,
 		  green        10%,
@@ -56,7 +56,7 @@ it('splits a large number of a more complex gradient stops into multiple gradien
   await run(
 
 `.foo {
-  /* Input example */
+  /* apply-gradient-stops-workaround */
   background: linear-gradient(to right,
     #5bdcdc calc((100% / 12) - 4px),
     transparent calc((100% / 12) - 4px),
@@ -109,7 +109,7 @@ it('splits a large number of a more complex gradient stops into multiple gradien
 ,
 
 `.foo {
-  /* Input example */
+  /* apply-gradient-stops-workaround */
   background: linear-gradient(to right,
     #5bdcdc calc((100% / 12) - 4px),
     transparent calc((100% / 12) - 4px),
