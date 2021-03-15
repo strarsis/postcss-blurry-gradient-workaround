@@ -75,6 +75,7 @@
     }
   },
   "dependencies": {
+    "color-parse": "^1.4.2",
     "gradient-parser": "github:strarsis/gradient-parser",
     "postcss-values-parser": "^5.0.0",
     "split-array": "^1.0.1"
