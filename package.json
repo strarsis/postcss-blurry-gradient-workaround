@@ -1,6 +1,6 @@
 {
   "name": "postcss-blurry-gradient-workaround",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "PostCSS plugin that splits gradients with too many explicit end-stops into separate gradients as workaround for blurry gradients in some browsers.",
   "keywords": [
     "postcss",
