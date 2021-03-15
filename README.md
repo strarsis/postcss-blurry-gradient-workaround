@@ -4,28 +4,45 @@
 
 [PostCSS]: https://github.com/postcss/postcss
 
+[Demo for the issue, including a workaround.](https://codepen.io/strarsis/pen/MWbxWMw)
+
 ```css
 .foo {
     /* Input example */
-	background: 
+	/* apply-gradient-stops-workaround */
+	background:
 		linear-gradient(to right,
-		  green        10%,                   /*   no explicit start-stop,  1st explicit end-stop */
-		  yellowgreen  10%, yellowgreen  20%, /*  1st explicit start-stop,  2nd explicit end-stop */
-		  yellow       20%, yellow       30%, /*  2nd explicit start-stop,  3rd explicit end-stop */
-		  orange       30%, orange       40%, /*  3rd explicit start-stop,  4th explicit end-stop */
-		  red          40%, red          50%, /*  4th explicit start-stop,  5th explicit end-stop */
-		  grey         50%, grey         60%, /*  5th explicit start-stop,  6th explicit end-stop */
-		  blue         60%, blue         70%, /*  6th explicit start-stop,  7th explicit end-stop */
-		  green        70%, green        70%, /*  7th explicit start-stop,  8th explicit end-stop (triggers bug) */
-		  yellowgreen  70%, yellowgreen  80%, /*  8th explicit start-stop,  9th explicit end-stop */
-		  yellow       80%, yellow       90%, /*  9th explicit start-stop, 10th explicit end-stop */
-		  salmon       90%                    /* 10th explicit start-stop,   no explicit end-stop */);
+		  green        10%,
+		  yellowgreen  10%, yellowgreen  20%,
+		  yellow       20%, yellow       30%,
+		  orange       30%, orange       40%,
+		  red          40%, red          50%,
+		  grey         50%, grey         60%,
+		  blue         60%, rgba(255,0,0,0) 70%,
+		  green        70%, green        70%,
+		  yellowgreen  70%, yellowgreen  80%,
+		  yellow       80%, yellow       90%,
+		  salmon       90%);
 }
 ```
 
 ```css
 .foo {
   /* Output example */
+  /* apply-gradient-stops-workaround */
+	background:
+		linear-gradient(to right,
+		  green        10%,
+		  yellowgreen  10%, yellowgreen  20%,
+		  yellow       20%, yellow       30%,
+		  orange       30%, orange       40%,
+		  red          40%, red          50%,
+		  grey         50%, grey         60%,
+		  blue         60%, rgba(255,0,0,0) 70%) , linear-gradient(to right , transparent 70%,
+		  green        70%, green        70%,
+		  yellowgreen  70%, yellowgreen  80%,
+		  yellow       80%, yellow       90%,
+		  salmon       90%);
 }
 ```
 
