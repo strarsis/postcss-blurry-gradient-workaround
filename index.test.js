@@ -12,8 +12,8 @@ it('splits gradient stops into two gradients', async () => {
   await run(
 
 `.foo {
-    /* apply-gradient-stops-workaround */
     background:
+	/* apply-gradient-stops-workaround */
         linear-gradient(to right,
           green        10%,
           yellowgreen  10%, yellowgreen  20%,
@@ -30,8 +30,8 @@ it('splits gradient stops into two gradients', async () => {
 ,
 
 `.foo {
-    /* apply-gradient-stops-workaround */
     background:
+	/* apply-gradient-stops-workaround */
         linear-gradient(to right,
           green        10%,
           yellowgreen  10%, yellowgreen  20%,
@@ -56,8 +56,9 @@ it('splits a large number of a more complex gradient stops into multiple gradien
   await run(
 
 `.foo {
+  background:
   /* apply-gradient-stops-workaround */
-  background: linear-gradient(to right,
+  linear-gradient(to right,
     #5bdcdc calc((100% / 12) - 4px),
     transparent calc((100% / 12) - 4px),
     transparent calc((100% / 12) + 4px),
@@ -109,8 +110,9 @@ it('splits a large number of a more complex gradient stops into multiple gradien
 ,
 
 `.foo {
+  background:
   /* apply-gradient-stops-workaround */
-  background: linear-gradient(to right,
+  linear-gradient(to right,
     #5bdcdc calc((100% / 12) - 4px),
     transparent calc((100% / 12) - 4px),
     transparent calc((100% / 12) + 4px),
@@ -170,8 +172,8 @@ it('works with gradients that have no direction/angle component', async () => {
   await run(
 
 `.foo {
-    /* apply-gradient-stops-workaround */
     background:
+	/* apply-gradient-stops-workaround */
         linear-gradient(
           green        10%,
           yellowgreen  10%, yellowgreen  20%,
@@ -188,8 +190,8 @@ it('works with gradients that have no direction/angle component', async () => {
 ,
 
 `.foo {
-    /* apply-gradient-stops-workaround */
     background:
+	/* apply-gradient-stops-workaround */
         linear-gradient(
           green        10%,
           yellowgreen  10%, yellowgreen  20%,

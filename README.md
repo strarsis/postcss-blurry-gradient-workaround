@@ -72,4 +72,19 @@ module.exports = {
 }
 ```
 
+**Step 4:** Enable plugin for specific gradients.
+Put the annoation in front of the gradient function:
+```css
+.test {
+  background: /* apply-gradient-stops-workaround */ linear-gradient(red, blue, yellow, grey, green, red, blue, yellow, grey, green, red, blue, yellow, grey, green);
+}
+````
+
 [official docs]: https://github.com/postcss/postcss#usage
+
+## Options
+### stopsLimit
+Number of stops that are allowed in a gradient.
+The gradient blurriness issue is triggered with 8 or more explicit end-stops.
+This means 2*8 overall stops, which is also the plugin default.
+
