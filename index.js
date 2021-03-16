@@ -39,7 +39,7 @@ function processDecl( decl, config ) {
 
     if(decl.bgwProcessed) return;
 
-    let values = parseValues(decl.value);
+    let values       = parseValues(decl.value);
     let gradientsAst = getGradientFuncs(values);
 
     for(let gradientAst of gradientsAst) {
@@ -122,9 +122,13 @@ function processDecl( decl, config ) {
         // clean up original gradient (after cloning it)
         gradientAst.remove();
 
+
         // Update value
-        decl.value        = values; // .toString()
+        let newValue      = values.toString();
+
+        decl.value        = newValue;
         decl.bgwProcessed = true;
+
     }
 }
 
@@ -167,19 +171,9 @@ function isColorTransparent(colorNode) {
 }
 
 function getGradientFuncs(values) {
-    //console.log(JSON.stringify(values, null, 2)); temp();
     let gradients = [];
     values.walkFuncs((funcNode) => {
         if(!funcNode.name.includes('-gradient')) return;
-
-        //console.log(funcNode.next());
-        /*
-            if(comment.text !== 'apply-gradient-stops-workaround') return;
-
-            let followingNode = comment.next();
-            console.log(followingNode.type); temp();
-            if(followingNode.type !== 'decl') return;
-            */
 
         gradients.push(funcNode);
     });
@@ -222,7 +216,7 @@ function getGradientDetails(funcNode) {
                     nodes: [],
                 };
             } else {
-                if( node.isColor || 
+                if( node.isColor ||
                    (node.type === 'word' && node.value === 'transparent')) { // (transparent not treated as color)
                     // color
                     curStop.value.push(node);
