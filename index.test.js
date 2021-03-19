@@ -212,3 +212,154 @@ it('works with gradients that have no direction/angle component', async () => {
 
 )
 })
+
+
+it('special case of a gradient where the plugin originally struggled with the delimiters', async () => {
+  await run(
+
+`.foo {
+  background:
+  /* apply-gradient-stops-workaround */
+  linear-gradient(
+  90deg,
+  #fff,
+  #fff
+),
+linear-gradient(
+  90deg,
+  #5bdcdc calc(8.33333% - 2px),
+  transparent calc(8.33333% - 2px),
+  transparent calc(8.33333% + 2px),
+  #53cfd5 calc(8.33333% + 2px),
+  #53cfd5 calc(16.66667% - 2px),
+  transparent calc(16.66667% - 2px),
+  transparent calc(16.66667% + 2px),
+  #86d6d9 calc(16.66667% + 2px),
+  #86d6d9 calc(25% - 2px),
+  transparent calc(25% - 2px),
+  transparent calc(25% + 2px),
+  #75acac calc(25% + 2px),
+  #75acac calc(33.33333% - 2px),
+  transparent calc(33.33333% - 2px),
+  transparent calc(33.33333% + 2px),
+  #6699a8 calc(33.33333% + 2px),
+  #6699a8 calc(41.66667% - 2px),
+  transparent calc(41.66667% - 2px),
+  transparent calc(41.66667% + 2px),
+  #a09daf calc(41.66667% + 2px),
+  #a09daf calc(50% - 2px),
+  transparent calc(50% - 2px),
+  transparent calc(50% + 2px),
+  #a386a4 calc(50% + 2px),
+  #a386a4 calc(58.33333% - 2px),
+  transparent calc(58.33333% - 2px),
+  transparent calc(58.33333% + 2px),
+  #dac7cb calc(58.33333% + 2px),
+  #dac7cb calc(66.66667% - 2px),
+  transparent calc(66.66667% - 2px),
+  transparent calc(66.66667% + 2px),
+  #e2cac6 calc(66.66667% + 2px),
+  #e2cac6 calc(75% - 2px),
+  transparent calc(75% - 2px),
+  transparent calc(75% + 2px),
+  #eed0c8 calc(75% + 2px),
+  #eed0c8 calc(83.33333% - 2px),
+  transparent calc(83.33333% - 2px),
+  transparent calc(83.33333% + 2px),
+  #f2b1b1 calc(83.33333% + 2px),
+  #f2b1b1 calc(91.66667% - 2px),
+  transparent calc(91.66667% - 2px),
+  transparent calc(91.66667% + 2px),
+  #fbeeea calc(91.66667% + 2px),
+  #fbeeea calc(100% - 2px)
+),
+linear-gradient(
+  90deg,
+  transparent calc(91.66667% + 2px),
+  #fbeeea calc(91.66667% + 2px),
+  #fbeeea calc(100% - 2px),
+  transparent calc(100% - 2px)
+);
+}`
+,
+
+`.foo {
+  background:
+  /* apply-gradient-stops-workaround */
+  linear-gradient(
+  90deg,
+  #fff,
+  #fff
+),
+linear-gradient(
+  90deg,
+  #5bdcdc calc(8.33333% - 2px),
+  transparent calc(8.33333% - 2px),
+  transparent calc(8.33333% + 2px),
+  #53cfd5 calc(8.33333% + 2px),
+  #53cfd5 calc(16.66667% - 2px),
+  transparent calc(16.66667% - 2px),
+  transparent calc(16.66667% + 2px),
+  #86d6d9 calc(16.66667% + 2px),
+  #86d6d9 calc(25% - 2px),
+  transparent calc(25% - 2px),
+  transparent calc(25% + 2px),
+  #75acac calc(25% + 2px),
+  #75acac calc(33.33333% - 2px) , transparent calc(33.33333% - 2px))
+,
+linear-gradient(
+  90deg,
+  transparent calc(33.33333% - 2px),
+  transparent calc(33.33333% + 2px),
+  #6699a8 calc(33.33333% + 2px),
+  #6699a8 calc(41.66667% - 2px),
+  transparent calc(41.66667% - 2px),
+  transparent calc(41.66667% + 2px),
+  #a09daf calc(41.66667% + 2px),
+  #a09daf calc(50% - 2px),
+  transparent calc(50% - 2px),
+  transparent calc(50% + 2px),
+  #a386a4 calc(50% + 2px),
+  #a386a4 calc(58.33333% - 2px),
+  transparent calc(58.33333% - 2px))
+,
+linear-gradient(
+  90deg,
+  transparent calc(58.33333% + 2px),
+  #dac7cb calc(58.33333% + 2px),
+  #dac7cb calc(66.66667% - 2px),
+  transparent calc(66.66667% - 2px),
+  transparent calc(66.66667% + 2px),
+  #e2cac6 calc(66.66667% + 2px),
+  #e2cac6 calc(75% - 2px),
+  transparent calc(75% - 2px),
+  transparent calc(75% + 2px),
+  #eed0c8 calc(75% + 2px),
+  #eed0c8 calc(83.33333% - 2px),
+  transparent calc(83.33333% - 2px),
+  transparent calc(83.33333% + 2px))
+,
+linear-gradient(
+  90deg
+  ,
+  transparent calc(83.33333% + 2px),
+  #f2b1b1 calc(83.33333% + 2px),
+  #f2b1b1 calc(91.66667% - 2px),
+  transparent calc(91.66667% - 2px),
+  transparent calc(91.66667% + 2px),
+  #fbeeea calc(91.66667% + 2px),
+  #fbeeea calc(100% - 2px)
+),
+linear-gradient(
+  90deg,
+  transparent calc(91.66667% + 2px),
+  #fbeeea calc(91.66667% + 2px),
+  #fbeeea calc(100% - 2px),
+  transparent calc(100% - 2px)
+);
+}`,
+
+{}
+
+)
+})

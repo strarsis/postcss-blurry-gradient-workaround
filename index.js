@@ -1,9 +1,10 @@
-const valuesParse = require('postcss-values-parser'),
-      parseValues = valuesParse.parse,
-      Punctuation = require('postcss-values-parser/lib/nodes/Punctuation'),
-      Word        = require('postcss-values-parser/lib/nodes/Word'),
-      parseColor  = require('color-parse'),
-      splitArray  = require('split-array');
+const valuesParse    = require('postcss-values-parser'),
+      parseValues    = valuesParse.parse,
+      Punctuation    = require('postcss-values-parser/lib/nodes/Punctuation'),
+      Word           = require('postcss-values-parser/lib/nodes/Word'),
+      parseColor     = require('color-parse'),
+      splitArray     = require('split-array'),
+      parseGradients = require('./parse-gradients');
 
 module.exports = (opts = {}) => {
 
@@ -43,7 +44,7 @@ function processDecl( decl, config ) {
     let gradientsAst = getGradientFuncs(values);
 
     for(let gradientAst of gradientsAst) {
-        let gradientDetails = getGradientDetails(gradientAst);
+        let gradientDetails = parseGradients(gradientAst);
         if(gradientDetails.colorStops.length <= stopsLimit) continue;
             // stops within limit, no further action needed
 
@@ -181,57 +182,4 @@ function getGradientFuncs(values) {
 }
 
 
-function getGradientDetails(funcNode) {
-    let gradient = {
-        direction:  [],
-        colorStops: [],
-        fnNode:     null,
-    };
 
-    gradient.fnNode = funcNode;
-
-    let inDirectionPart = false;
-    let inStopsPart     = false;
-    var curStop         = false;
-    funcNode.each((node) => {
-        if(node.type === 'word' && !inStopsPart) {
-            inDirectionPart = true;
-        }
-        if(!inStopsPart && node.type === 'punctuation') {
-            inDirectionPart = false;
-            inStopsPart     = true;
-        }
-        if(inDirectionPart) { // direction
-            gradient.direction.push(node);
-        }
-
-        if(inStopsPart) { // stops
-            if(node.type === 'punctuation' && node.value === ',') { // stop
-                if(curStop)
-                    gradient.colorStops.push(curStop);
-
-                curStop = {
-                    value: [],
-                    pos:   [],
-                    nodes: [],
-                };
-            } else {
-                if( node.isColor ||
-                   (node.type === 'word' && node.value === 'transparent')) { // (transparent not treated as color)
-                    // color
-                    curStop.value.push(node);
-                } else {
-                    // position
-                    curStop.pos.push(node);
-                }
-            }
-
-            curStop.nodes.push(node); // collects all nodes for later use
-        }
-    });
-
-    // for the last stop
-    gradient.colorStops.push(curStop);
-
-    return gradient;
-}
